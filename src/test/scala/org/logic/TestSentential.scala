@@ -69,20 +69,16 @@ object TestSentential{
   }
 
   def testValid(name: String, sentence: String){
-    println("name begin = " + name)
     val tree = new SententialParser(negate(sentence)).parse
     val red = sententialReducer.reduce(tree)
     val isValid = sententialReducer.valid(red)
     assert(isValid)
-    println("name end = " + name)
   }
 
   def testInvalid(name: String, sentence: String){
-    println("name begin = " + name)
     val tree = new SententialParser(negate(sentence)).parse
     val red = sententialReducer.reduce(tree)
     val isInvalid = sententialReducer.invalid(red)
     assert(isInvalid)
-    println("name end = " + name)
   }
 }

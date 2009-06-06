@@ -10,7 +10,6 @@ object TestPredicate{
     testLexer
     testParser
     testParser2
-    throw new RuntimeException("foo")
     testValidity
   }
 
@@ -59,23 +58,20 @@ object TestPredicate{
   }
 
   def testPredicateValid(name:String, sentence:String){
-    println("name begin = " + name)
     val tree = new PredicateParser(negate(sentence)).parse
     val red = predicateReducer.reduce(tree)
     
     val isValid = predicateReducer.valid(red)// && !valid(tree)
+    println(name + " = " + red.lispify)
     assert(isValid)
-    println("name end = " + name)
   }
   
   def testPredicateInvalid(name:String, sentence:String){
-    println("name begin = " + name)
     val tree = new PredicateParser(negate(sentence)).parse
     val red = predicateReducer.reduce(tree)
  
     val isInvalid = predicateReducer.invalid(red)// && !valid(tree)
     assert(isInvalid)
-    println("name end = " + name)
   }
 }
 

@@ -30,33 +30,5 @@ abstract class Reducer {
   def annotate(node: Node):Node
 
   def reduce(root: Node):Node
-
-  case class Proposition(t: String) extends Node(t) {
-    override def unary_! : Proposition = Proposition("~" + text)
-  }
-
-  case class Disjunction(a: Node, b: Node)
-  extends Node("v", stackAnnotate(a), stackAnnotate(b)) {
-    override def unary_! : Node = Conjunction(!a, !b)
-    override def stringify: String = commonStringify(text, a, b)
-  }
-
-  case class Conjunction(a: Node, b: Node)
-  extends Node("&", stackAnnotate(a, b)){
-    override def unary_! : Node = Disjunction(!a, !b)
-    override def stringify: String = commonStringify(text, a, b)
-  }
-
-  case class Conditional(a: Node, b: Node)
-  extends Node("->", stackAnnotate(!a), stackAnnotate(b)){
-    override def unary_! : Node = Conjunction(a, !b)
-    override def stringify: String = commonStringify(text, a, b)
-  }
-
-  case class Biconditional(a: Node, b: Node)
-  extends Node("=", stackAnnotate(a, b), stackAnnotate(!a, !b)){
-    override def unary_! : Node = Biconditional(!a, b)
-    override def stringify: String = commonStringify(text, a, b)
-  }
 }
 

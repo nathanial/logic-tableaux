@@ -92,9 +92,7 @@ class CompoundPredicateReducer extends CompoundReducer {
   val predicateReducer = new PredicateReducer
 
   def reduceSentence(sentence: String): Node = {
-    val root = predicateReducer.reduce(convertTextToAst(sentence))
-    predicateReducer.reset
-    return root
+    return predicateReducer.reduce(convertTextToAst(sentence))
   }
 
   def parseSentence(sentence: String): Node =

@@ -42,8 +42,10 @@
       <classpath>
 	<fileset dir="lib">
 	  <include name="**/*.jar" />
-	  <include name="${base.dir}/build/logic.jar" />
 	</fileset>
+	<fileset dir="build">
+	  <include name="logic.jar" />
+	</fileset>		  
       </classpath>
     </java>
   </target>
@@ -53,8 +55,10 @@
       <classpath>
 	<fileset dir="lib">
 	  <include name="**/*.jar" />
-	  <include name="${base.dir}/build/logic.jar" />
 	</fileset>
+	<fileset dir="build">
+	  <include name="logic.jar" />
+	</fileset>		  
       </classpath>
     </java>
   </target>

@@ -1,11 +1,23 @@
 package logic
 import java.util.regex.Pattern
+import scala.collection.mutable.HashMap
 
 case class Node(text: String, children: Node*) extends Ordered[Node] {
   val convertedPropPattern = Pattern.compile("""~?[A-Z]([a-z]|[0-9]+|_[0-9]+)""")
-  override def compare(that: Node) = this.size - that.size 
-  
-  def unary_! : Node = Node("~", Node(text, children: _*))
+  val properties = new HashMap[String, AnyRef]()
+
+  def getProperty(name:String) = properties.get(name)
+  def setProperty(name:String, value:AnyRef) {
+    properties.put(name, value)
+  }
+
+  override def compare(that: Node) = this.size - that.size   
+
+  def copy:Node = { 
+    val duplicate = Node(text, children.map(_.copy):_*)
+    duplicate.properties ++= properties
+    return duplicate
+  }
 
   def stringify: String = {
     if(children.size == 0)

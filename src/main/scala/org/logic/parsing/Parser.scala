@@ -70,16 +70,18 @@ abstract class Parser(tokens: List[Token]) {
 
     if(test("L_PAREN")){
       consume("L_PAREN")
-      var sen = sentence
+      var left_sentence = sentence
       consume("R_PAREN")
 
-      sen = stackModifiers(sen, modList)
+      left_sentence = stackModifiers(sen, modList)
 
       val tuple = secondHalf
       if(tuple == null)
-        return sen
-      else
-        return Node(tuple._1, sen, tuple._2)
+        return left_sentence
+      else {
+	val (operator:String, right_sentence:Node) = tuple
+        return Node(operator, sen, right_sentence)
+      }
     }
     else if(test("PROP")){
       val prop = stackModifiers(Node(consume("PROP").value), modList)
@@ -87,15 +89,17 @@ abstract class Parser(tokens: List[Token]) {
       val tuple = secondHalf
       if(tuple == null)
         return prop
-      else
-        return Node(tuple._1, prop, tuple._2)
+      else {
+	val (operator:String, right_sentence:Node) = tuple
+        return Node(operator, prop, right_sentence)
+      }
     }
     else{
       throw new RuntimeException("Sentence Failed on " + currentToken)
     }
   }
 
-  def secondHalf = {
+  def right_sentence = {
     if(test("OP"))
       (consume("OP").value, sentence)
     else
