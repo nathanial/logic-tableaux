@@ -1,0 +1,61 @@
+<project name="logic-program" default="build">
+  <property name="src.dir" value="src" />
+  <property name="build.dir" value="build" />
+  <property name="lib.dir" value="lib" />
+
+  <taskdef resource="scala/tools/ant/antlib.xml">
+    <classpath>
+      <pathelement location="${lib.dir}/scala-compiler-2.7.3.jar" />
+      <pathelement location="${lib.dir}/scala-library-2.7.3.jar" />
+    </classpath>
+  </taskdef>
+
+  <target name="init">
+    <mkdir dir="build" />
+  </target>
+
+  <target name="clean">
+    <delete dir="build" />
+  </target>
+
+  <target name="build" depends="clean,init">
+    <echo>compiling sources</echo>
+    <scalac srcdir="src" destdir="build">
+      <classpath>
+	<fileset dir="lib">
+	  <include name="**/*.jar" />
+	</fileset>
+      </classpath>
+      <include name="main/**/*.scala" />
+      <include name="test/**/*.scala" />
+    </scalac>
+  </target>
+
+  <target name="jar" depends="build">
+    <jar destfile="build/logic.jar">
+      <fileset dir="build" />
+    </jar>
+  </target>
+  
+  <target name="run" depends="jar">
+    <java classname="logic.view.Main" fork="true">
+      <classpath>
+	<fileset dir="lib">
+	  <include name="**/*.jar" />
+	  <include name="${base.dir}/build/logic.jar" />
+	</fileset>
+      </classpath>
+    </java>
+  </target>
+
+  <target name="run-tests" depends="jar">
+    <java classname="logic.MainDriver" fork="true">
+      <classpath>
+	<fileset dir="lib">
+	  <include name="**/*.jar" />
+	  <include name="${base.dir}/build/logic.jar" />
+	</fileset>
+      </classpath>
+    </java>
+  </target>
+</project>
